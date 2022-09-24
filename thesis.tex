@@ -40,7 +40,7 @@
 %\input{front/template/signatures.tex}
 
 %\input{front/acknowledge.tex}
-\input{front/abstract.tex}
+\input{front/abstract1.tex}
 
 
 % -------------------- Table of Contents --------------------
@@ -52,17 +52,25 @@
 \listoffigures \newpage
 \listoftables \newpage
 
+
+
 %\pagenumbering{arabic}
 
 % -------------------- Chapters --------------------
 
-\include{chapters/guide}
-\include{chapters/writing}
-\include{chapters/introduction}
+\include{chapters/introduction1}
+\include{chapters/preliminaries}
+\include{chapters/model}
+
 \include{chapters/definitions}
 \include{chapters/literature}
 \include{chapters/results}
 \include{chapters/conclusions}
+
+\include{chapters/model}
+\include{chapters/guide}
+\include{chapters/writing}
+
 
 
 % -------------------- Appendices --------------------
@@ -71,9 +79,12 @@
 \include{chapters/appendix}
 \end{appendix}
 
+
+
+
 % -------------------- Bibliography --------------------
 
-
+%\input{bibs/bibs1.tex}
 \input{bibs/bibs.tex}
 
 
