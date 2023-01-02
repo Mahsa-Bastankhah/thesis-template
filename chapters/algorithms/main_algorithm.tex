@@ -1,0 +1,46 @@
+%% This declares a command \Comment
+%% The argument will be surrounded by /* ... */
+%\documentclass{article}
+%\input{macros.tex}
+
+%\begin{document}
+\RestyleAlgo{ruled}
+
+%% This is needed if you want to add comments in
+%% your algorithm with \Comment
+\SetKwFunction{FTracker}{Tracker}
+\SetKwComment{Comment}{ }{ }
+\SetKwInput{KwInput}{Input}
+\SetKwInOut{KwInitialise}{Initialise}
+\SetKwFunction{FDecide}{Decide}
+\SetKwFunction{FTracker}{Tracker}
+\SetKwFunction{FHandle}{Handle\_funds}
+
+\begin{algorithm}[htb!]
+\caption{Main algorithm }
+  \label{Algorithm:logC-competitive-main}
+%\KwInput{$(C,f_1)$}
+
+\KwInitialise{left side buckets $B^{\ell}$}
+\KwInitialise{right side buckets $B^{r}$}
+\KwInitialise{tracker $\tracker, X \gets 0, \emptyset $}
+
+\For{transaction $x$ in order of arrival}{
+    concatenate $x$ to $X$\\ \label{mainalg:newTRx}
+    $\tracker' \gets \Call{Funds}{X}$\\ \label{mainalg:oracle}
+    \uIf{$\tracker' > \tracker$}{ \label{mainalg:compare}
+        $\tracker \gets \tracker' + f_1$\\
+        recharge to $2(2 + \slog)\tracker$ \label{mainalg:recharge}
+    }
+    $sdr,rcv \gets \ell , r$\\  \label{mainalg:beforeDecide1}
+    \uIf{$x$ is from right to left }{
+     $sdr,rcv \gets r , \ell $
+    }\label{mainalg:beforeDecide2}
+        $ B^{sdr},B^{rcv}, Status \gets \Call{Decide}{\tracker ,x , B^{sdr},  B^{rcv}}$\\ \label{mainalg:decide}
+        \uIf{$ Status == \mathtt{Accept} $}{
+          $ B^{rcv} \gets \Call{HandleFunds}{\tracker , x , B^{rcv}}$
+       }
+    }
+    
+\end{algorithm}
+%\end{document}

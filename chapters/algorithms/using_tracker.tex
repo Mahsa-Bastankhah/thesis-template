@@ -1,0 +1,20 @@
+\RestyleAlgo{ruled}
+
+\SetKwFunction{FTracker}{Tracker}
+
+\SetKwComment{Comment}{ }{}
+\SetKwInput{KwInitialise}{Initialise}
+\SetKwFunction{FTracker}{Tracker}
+\begin{algorithm}[t]
+  \caption{$(\gamma, \delta)$-recharging}
+  \label{Algorithm:onlinetracker}
+  \KwInitialise{ $\tracker, X \gets 0, \emptyset$}
+  \For{transaction $x$ in order of arrival}{
+    concatenate $x$ to $X$\\
+    $\tracker' \gets \Call{Funds}{X}$\\
+    \uIf{$\tracker' > \tracker$}{ \label{A2condition}
+        $\tracker \gets \tracker' + \delta$\\
+        recharge to $\gamma \tracker$
+    }
+  }
+\end{algorithm}

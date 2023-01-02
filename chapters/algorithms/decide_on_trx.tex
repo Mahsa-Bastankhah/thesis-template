@@ -1,0 +1,45 @@
+%% This declares a command \Comment
+%% The argument will be surrounded by /* ... */
+%\documentclass{article}
+%\input{macros.tex}
+
+%\begin{document}
+\RestyleAlgo{ruled}
+
+%% This is needed if you want to add comments in
+%% your algorithm with \Comment
+\SetKwComment{Comment}{ }{ }
+\SetKwInput{KwInput}{Input}
+\SetKwInput{KwOutput}{Output}
+\SetKwFunction{FDecide}{Decide}
+\SetKwProg{Fn}{}{}{}
+
+\begin{algorithm}[hbt!]
+\caption{Decision on transaction}
+  \label{Algorithm:decide_on_trx}
+  \Fn{\Call{Decide}{$\tracker , x , B^{sdr}, B^{rcv}$}}{
+ $Status \gets \mathtt{Accept}$\\
+        \uIf{$ \frac{\tracker}{2^{i}} < x \leq \frac{\tracker}{2^{i-1}} \; and \; x \leq B_i^{sdr}$}{
+         Accept $x$\\
+        $ \nebu \gets \min(\tracker,B_i^{sdr}-x+B_o^{sdr})$ \\
+        $B_o^{sdr} \gets \max(0,B_i^{sdr}-x+B_o^{sdr}-\tracker)$\\
+        $B_i^{sdr} \gets \nebu$\\
+}
+    \uElseIf{$  x_i \leq \frac{\tracker}{C} \; and \; x \leq B_s^{sdr}$}{
+        Accept $x$\\
+        $\nebu \gets \min(2\tracker,B_s^{sdr}-x+B_o^{sdr})$\\ 
+        $B_o^{sdr} \gets \max(0,B_s^{sdr}-x+B_o^{sdr}-2\tracker)$\\
+        $B_s^{sdr} \gets \nebu$\\}
+    \uElseIf{$  x_i \leq \frac{\tracker}{C} \; and \; x > B_s^{sdr}$}{
+        Do off-chain rebalancing to fill $B_s$ and pay $f_2C$.\\
+        $B_o^{rcv} \gets B_o^{rcv}-(2\tracker-B_s^{sdr}) $.\\ \label{decidealg:bo}
+        $B_s^{rcv} \gets B_s^{rcv}-x $.\\ \label{decidealg:bs}
+        Accept $x$\\
+        $B_s^{sdr} \gets 2\tracker $.\\
+        }
+    \uElse{
+    Reject x\\
+    $Status \gets \mathtt{Reject}$}
+    \KwRet $(B^{sdr}, B^{rcv}, Status)$
+  }
+\end{algorithm}

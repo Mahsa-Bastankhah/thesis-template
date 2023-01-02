@@ -1,0 +1,29 @@
+\RestyleAlgo{ruled}
+
+\SetKwComment{Comment}{}{}
+\SetKwInput{KwInput}{Input}
+\SetKwInput{KwOutput}{Output}
+\SetKwFunction{FHandle}{Handle\_funds}
+\SetKwProg{Fn}{}{}{\KwRet}
+
+\begin{algorithm}[hbt!]
+\caption{Handling funds coming from the other side}
+
+  \label{Algorithm:handle-fund}
+  
+  \Fn{\Call{HandleFunds}{$\tracker , x , B$}}{
+        $\nebu \gets \min(2\tracker,B_s+x)$\\ \label{handlealg:bs}
+        $x \gets \max(x+B_s-2\tracker,0)$\\
+        $B_s \gets \nebu$\\
+        \For{$i \in [\slog]$ in decreasing order}{
+            \uIf{$x > 0$}
+            {
+              $\nebu \gets \min(\tracker,B_i+x)$\\
+              $x \gets \max(x+B_i-\tracker,0)$\\
+              $B_i \gets \nebu$\\
+            }
+        }
+      $B_o \gets B_o + x$
+    \KwRet $(B)$
+  }
+\end{algorithm}
